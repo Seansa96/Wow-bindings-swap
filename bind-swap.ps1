@@ -16,7 +16,7 @@ if ($file -eq 'bindings-cache.wtf') {
     $count++
 }
 
-if ($found) {
+if ($found) { 
     $bindings1 = $files1[$count]
 } else {
     Write-Output "File 'bindings.wtf' not found."
@@ -71,9 +71,30 @@ if ($accountIndex -ge 0 -and $accountIndex -lt ($pathParts1.Count - 1)) {
 if (!(Test-Path "C:\Users\$env:USERNAME\Desktop\BackupBinds\$accountName1")){
 New-Item -ItemType Directory -Path "C:\Users\$env:USERNAME\Desktop\BackupBinds\$accountName1"
 }
+else {
+$userResponse = Read-Host "Do you want to overwrite the existing backup? (Y/N)"
+if ($userResponse -eq "Y") {
+    New-Item -ItemType Directory -Path "C:\Users\$env:USERNAME\Desktop\BackupBinds\$accountName1" -Force
+}
+else {
+    Write-Host "Backup not created."
+    exit
+
+}
+}
 
 if (!(Test-Path "C:\Users\$env:USERNAME\Desktop\BackupBinds\$accountName2")){
 New-Item -ItemType Directory -Path "C:\Users\$env:USERNAME\Desktop\BackupBinds\$accountName2"
+else {
+    $userResponse = Read-Host "Do you want to overwrite the existing backup? (Y/N)"
+    if ($userResponse -eq "Y") {
+        New-Item -ItemType Directory -Path "C:\Users\$env:USERNAME\Desktop\BackupBinds\$accountName1" -Force
+    }
+    else {
+        Write-Host "Backup not created."
+        exit
+    }
+}
 }
 
 Copy-Item -Path ($Account1 + "\bindings-cache.wtf") -Destination "C:\Users\$env:USERNAME\Desktop\BackupBinds\$accountName1"
